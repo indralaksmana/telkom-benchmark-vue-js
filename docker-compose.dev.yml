@@ -1,0 +1,59 @@
+version: '2'
+
+services:
+  vue_php:
+    image: vueapp_vue_php
+    build:
+      context: ./app
+      dockerfile: ./docker/dev/php/Dockerfile
+    container_name: vue_php
+    networks:
+      - webgateway
+      - web
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:vue-php.lm.local"
+      - "traefik.backend=vue-php"
+      - "traefik.docker.network=webgateway"
+
+  # vue_java:
+  #   image: vueapp_vue_java
+  #   build:
+  #     context: ./app
+  #     dockerfile: ./docker/dev/java/Dockerfile
+  #   container_name: vue_java
+  #   networks:
+  #     - webgateway
+  #     - web
+  #   restart: always
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.frontend.rule=Host:vue-java.lm.local"
+  #     - "traefik.backend=vue-java"
+  #     - "traefik.docker.network=webgateway"
+
+  # vue_node:
+  #   image: vueapp_vue_node
+  #   build:
+  #     context: ./app
+  #     dockerfile: ./docker/dev/node/Dockerfile
+  #   container_name: vue_node
+  #   networks:
+  #     - webgateway
+  #     - web
+  #   restart: always
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.frontend.rule=Host:vue-node.lm.local"
+  #     - "traefik.backend=vue-node"
+  #     - "traefik.docker.network=webgateway"
+
+networks:
+  webgateway:
+    external:
+      name: webgateway
+  web:
+    external:
+      name: traefik
+
